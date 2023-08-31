@@ -1,5 +1,5 @@
 # Use a Node.js base image
-FROM node:14-alpine
+FROM node:17-alpine AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -19,3 +19,11 @@ RUN npm run build
 
 # Serve the React app on port 3000
 CMD ["npm", "start"]
+
+#Stage 2
+# FROM nginx:latest
+# WORKDIR /usr/share/nginx/html
+# # RUN rm -rf ./*
+# COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+# COPY --from=builder /app/build .
+# ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
